@@ -5,4 +5,6 @@ package com.example.imusic.bean;
  */
 
 public class Song {
+    private String test;
+
 }
