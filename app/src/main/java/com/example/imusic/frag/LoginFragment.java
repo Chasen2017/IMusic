@@ -1,22 +1,26 @@
 package com.example.imusic.frag;
 
 
+
 import android.content.Context;
 import android.os.Bundle;
+
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.imusic.AccountTrigger;
 import com.example.imusic.R;
 
-import net.qiujuer.genius.ui.widget.Button;
+
 import net.qiujuer.genius.ui.widget.Loading;
 
 import butterknife.BindView;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
