@@ -23,7 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by asus-pc on 2017/12/2.
+ * 用户登录注册的Activity
  */
 
 public class AccountActivity extends AppCompatActivity implements AccountTrigger {

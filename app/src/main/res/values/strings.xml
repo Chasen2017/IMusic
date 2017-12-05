@@ -10,4 +10,12 @@
     <string name="label_go_register">没有账户？去注册</string>
     <string name="label_go_login">已有账户？去登录</string>
     <string name="label_register_welcome">欢迎您!</string>
+
+    <!--Toast提示-->
+    <string name="error_phone_input">电话输入格式错误，要输入11位哦</string>
+    <string name="error_phone_empty_input">电话不能为空哦</string>
+    <string name="error_name_input">名字不能为空哦</string>
+    <string name="error_password_input">密码不能为空哦</string>
+    <string name="register_success">注册成功!</string>
+    <string name="login_fail">登录失败！</string>
 </resources>
