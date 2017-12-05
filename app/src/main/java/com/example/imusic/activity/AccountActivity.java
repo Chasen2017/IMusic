@@ -1,5 +1,7 @@
 package com.example.imusic.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import com.example.imusic.AccountTrigger;
 import com.example.imusic.frag.LoginFragment;
 import com.example.imusic.R;
 import com.example.imusic.frag.RegisterFragment;
+import com.example.imusic.presistence.Account;
 
 import net.qiujuer.genius.ui.compat.UiCompat;
 
@@ -23,10 +26,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by asus-pc on 2017/12/2.
+ * 用户登录注册的Activity
  */
 
-public class AccountActivity extends AppCompatActivity implements AccountTrigger {
+public class AccountActivity extends ActivityCollector implements AccountTrigger {
 
     // 用于Fragment记录和切换
     private Fragment mCurFragment;
@@ -36,11 +39,22 @@ public class AccountActivity extends AppCompatActivity implements AccountTrigger
     @BindView(R.id.im_bg)
     ImageView mBg;
 
+
+    /**
+     * AccountActivity的入口方法
+     * @param context 从context跳转到AccountActivity
+     */
+    public static void show(Context context) {
+        context.startActivity(new Intent(context, AccountActivity.class));
+    }
+
     // onCreate方法使用这个，用另外一个会使碎片页面加载不出来
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
+        ActivityCollector.addActivity(this);
+        Account.load(); //确保数据先初始化
         initWidget();
     }
 
@@ -95,5 +109,11 @@ public class AccountActivity extends AppCompatActivity implements AccountTrigger
                 .beginTransaction()
                 .replace(R.id.lay_container, fragment)
                 .commit();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }
