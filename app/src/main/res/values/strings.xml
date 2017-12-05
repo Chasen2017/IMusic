@@ -10,6 +10,9 @@
     <string name="label_go_register">没有账户？去注册</string>
     <string name="label_go_login">已有账户？去登录</string>
     <string name="label_register_welcome">欢迎您!</string>
+    <string name="label_cancellation">注消登录</string>
+    <string name="label_exit">退出</string>
+    <string name="label_hello">hello,</string>
 
     <!--Toast提示-->
     <string name="error_phone_input">电话输入格式错误，要输入11位哦</string>

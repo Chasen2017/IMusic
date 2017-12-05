@@ -2,7 +2,6 @@ package com.example.imusic.frag;
 
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -13,7 +12,7 @@ import android.widget.EditText;
 
 import com.example.imusic.AccountTrigger;
 import com.example.imusic.R;
-import com.example.imusic.activity.AccountActivity;
+import com.example.imusic.presistence.Account;
 import com.example.imusic.util.ToastUtil;
 
 import net.qiujuer.genius.ui.widget.Button;
@@ -78,13 +77,9 @@ public class RegisterFragment extends Fragment {
             return;
         }
         mLoading.start();
-        // 持久化保存
-        SharedPreferences sp = getContext().getSharedPreferences(AccountActivity.class.getName(), Context.MODE_PRIVATE);
-        sp.edit()
-                .putString("name", mNameEt.getText().toString().trim())
-                .putString("password", mPasswordEt.getText().toString().trim())
-                .putString("phone", mPhoneEt.getText().toString().trim())
-                .apply();
+        // 保存
+        Account.save(mNameEt.getText().toString().trim(),
+                mPhoneEt.getText().toString().trim(), mPasswordEt.getText().toString().trim());
         mLoading.stop();
         //注册成功之后跳转到登录页面
         ToastUtil.showToast(R.string.register_success);

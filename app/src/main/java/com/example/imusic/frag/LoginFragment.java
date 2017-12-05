@@ -19,6 +19,7 @@ import com.example.imusic.App;
 import com.example.imusic.R;
 import com.example.imusic.activity.AccountActivity;
 import com.example.imusic.activity.MainActivity;
+import com.example.imusic.presistence.Account;
 import com.example.imusic.util.ToastUtil;
 
 
@@ -32,7 +33,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- *
+ * 登录的Fragment
  */
 public class LoginFragment extends Fragment {
 
@@ -65,16 +66,20 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         ButterKnife.bind(this, view);
-        // 加载持久化数据保存的帐号密码信息
-        load();
-        mPhoneEt.setText(phone+"");
-        mPasswordEt.setText(password+"");
+        // 加载保存的数据
+        mPhoneEt.setText(Account.phone+"");
+        mPasswordEt.setText(Account.password+"");
         return view;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
+        // 判断是否登录过了，如果登录过了，则直接跳转到MainActivity
+        if (Account.isLogin) {
+            MainActivity.show(getContext());
+        }
         // 拿到Activity的引用
         mTrigger = (AccountTrigger) context;
     }
@@ -92,22 +97,20 @@ public class LoginFragment extends Fragment {
         String pho = mPhoneEt.getText().toString().trim();
         String pw = mPasswordEt.getText().toString().trim();
         // 帐号密码不为空，且匹配，跳转到MainActivity
-        if (!TextUtils.isEmpty(pho) && !TextUtils.isEmpty(pw) && phone.equals(pho) && password.equals(pw)) {
+        if (TextUtils.isEmpty(pho) || TextUtils.isEmpty(pw)) {
+            ToastUtil.showToast(R.string.login_fail);
+            mLoading.stop();
+            return;
+        }
+        if (Account.check(pho, pw)) {
+            // 匹配成功，保存登录状态，跳转到MainActivity
+            Account.saveIsLogin(true);
             MainActivity.show(getContext());
             mLoading.stop();
         } else {
             ToastUtil.showToast(R.string.login_fail);
+            mLoading.stop();
         }
-        mLoading.stop();
-    }
-
-    /**
-     * 加载本地保存的帐号密码
-     */
-    private void load() {
-        SharedPreferences sp = App.getContext().getSharedPreferences(AccountActivity.class.getName(), Context.MODE_PRIVATE);
-        phone = sp.getString("phone","");
-        password = sp.getString("password", "");
     }
 
 }
