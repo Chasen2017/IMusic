@@ -10,7 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
+
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -18,8 +19,14 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.ViewTarget;
 import com.example.imusic.R;
+import com.example.imusic.adapter.MusicAdapter;
+import com.example.imusic.bean.Song;
 import com.example.imusic.presistence.Account;
+import com.example.imusic.util.MusicUtil;
 import com.example.imusic.util.ToastUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +39,29 @@ public class MainActivity extends ActivityCollector {
     @BindView(R.id.nav_view)
     NavigationView mNavView;
 
+    @BindView(R.id.list_view)
+    ListView musicListView;
+
+    private MusicAdapter musicAdapter;
+
+    private List<Song> musicList = new ArrayList<Song>();
+
+    public Song song;
+
+    @BindView(R.id.tv_nowSong)
+    TextView titleTV;
+
+    @BindView(R.id.tv_nowSinger)
+    TextView artistTV;
+
+    @BindView(R.id.all_duration)
+    TextView allDuration;
+
+    @BindView(R.id.now_duration)
+    TextView nowDuation;
+
+    @BindView(R.id.seek_bar)
+    SeekBar seekBar;
     /**
      * MainActivity的入口方法
      * @param context 从context跳转到MainActivity
@@ -58,6 +88,25 @@ public class MainActivity extends ActivityCollector {
                         this.view.setBackground(resource.getCurrent());
                     }
                 });
+
+        allDuration.setText(getTime(0));
+        nowDuation.setText(getTime(0));
+        musicList = MusicUtil.getMusicData(this);
+        musicAdapter = new MusicAdapter(this, musicList);
+        musicListView.setAdapter(musicAdapter);
+    }
+
+    //时间转换
+    private String getTime(int duration) {
+        duration /= 1000;
+        int hour = duration/3600;       //时
+        int minute = (duration-hour*3600)/60;   //分
+        int seconds = duration-hour*3600-minute*60;  //秒
+
+        if(hour > 0) {
+            return String.format("%02d:%02d:%02d", hour, minute, seconds);
+        }
+        return String.format("%02d:%02d", minute, seconds);
     }
 
     private void initWidget() {
@@ -89,11 +138,23 @@ public class MainActivity extends ActivityCollector {
                 ActivityCollector.finishAll();
             }
         });
-
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ActivityCollector.removeActivity(this);
+    }
+
+    //上一首
+    public void before(View view) {
+    }
+
+    //播放/暂停
+    public void star(View view) {
+    }
+
+    //下一首
+    public void next(View view) {
     }
 }
