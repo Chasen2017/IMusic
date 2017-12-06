@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:apps="http://schemas.android.com/tools"
     android:orientation="horizontal"
-    android:padding="@dimen/len_2">
+    android:padding="@dimen/len_6">
 
     <TextView
         android:id="@+id/txt_id"
@@ -72,6 +72,7 @@
     </LinearLayout>
 
         <View
+            android:layout_marginTop="@dimen/len_8"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/black_alpha_32"/>
