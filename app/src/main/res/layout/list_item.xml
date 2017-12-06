@@ -9,51 +9,71 @@
     <TextView
         android:id="@+id/txt_id"
         android:layout_width="0dp"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:gravity="center"
-        android:textSize="@dimen/font_24"
+        android:textSize="@dimen/font_14"
         android:textColor="@color/colorPrimary"
         apps:text="1"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"/>
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="0dp"
-        android:layout_weight="10"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/len_4">
+        android:layout_weight="19"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/txt_title"
-            android:layout_width="match_parent"
-            android:textSize="@dimen/font_20"
-            android:layout_height="wrap_content"
-            apps:text="不为谁而做的歌"
-            android:maxLines="1"
-            android:gravity="start|bottom"
-            android:textColor="@color/black"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            />
-
-        <TextView
-            android:id="@+id/txt_artist"
-            android:textSize="@dimen/font_16"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            apps:text="林俊杰"
-            android:maxLines="1"
-            android:gravity="start|top"
-            android:textColor="@color/colorPrimary"/>
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_weight="18"
+                android:orientation="vertical"
+            android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/len_4">
+
+                <TextView
+                    android:id="@+id/txt_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start|bottom"
+                    android:maxLines="1"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/font_20"
+                    apps:text="不为谁而做的歌" />
+
+                <TextView
+                    android:id="@+id/txt_artist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start|top"
+                    android:maxLines="1"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/font_16"
+                    apps:text="林俊杰" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/im_details"
+                android:layout_width="@dimen/len_16"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/len_8"
+                android:layout_marginLeft="@dimen/len_8"
+                android:layout_marginRight="@dimen/len_8"
+                android:layout_marginTop="@dimen/len_8"
+                android:layout_weight="1"
+                android:background="@drawable/ic_details"
+                android:padding="@dimen/len_8" />
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/im_details"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="@dimen/len_4"
-        android:layout_marginBottom="@dimen/len_4"
-        android:layout_height="match_parent"
-        android:background="@drawable/ic_details"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black_alpha_32"/>
+    </LinearLayout>
 </LinearLayout>
