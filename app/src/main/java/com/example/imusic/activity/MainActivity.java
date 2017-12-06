@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -17,6 +19,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.ViewTarget;
 import com.example.imusic.R;
 import com.example.imusic.presistence.Account;
+import com.example.imusic.util.ToastUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,7 +65,15 @@ public class MainActivity extends ActivityCollector {
         TextView mNameTv = headView.findViewById(R.id.txt_user_name);
         TextView mCancellation = headView.findViewById(R.id.txt_cancellation);
         TextView mExit = headView.findViewById(R.id.txt_exit);
+        TextView mRefresh = headView.findViewById(R.id.txt_refresh);
         mNameTv.setText(Account.name+"");
+        mRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO 刷新音乐列表
+                ToastUtil.showToast(R.string.refresh_success);
+            }
+        });
         mCancellation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,8 +89,8 @@ public class MainActivity extends ActivityCollector {
                 ActivityCollector.finishAll();
             }
         });
-    }
 
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
