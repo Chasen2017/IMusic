@@ -17,6 +17,7 @@ import com.bumptech.glide.request.target.ViewTarget;
 import com.example.imusic.AccountTrigger;
 import com.example.imusic.frag.LoginFragment;
 import com.example.imusic.R;
+import com.example.imusic.frag.PermissionsFragment;
 import com.example.imusic.frag.RegisterFragment;
 import com.example.imusic.presistence.Account;
 
@@ -55,6 +56,13 @@ public class AccountActivity extends ActivityCollector implements AccountTrigger
         setContentView(R.layout.activity_account);
         ActivityCollector.addActivity(this);
         Account.load(); //确保数据先初始化
+        // 检查权限
+        if (PermissionsFragment.haveAll(this, getSupportFragmentManager())) {
+            if (Account.isLogin) {
+                MainActivity.show(this);
+                finish();
+            }
+        }
         initWidget();
     }
 

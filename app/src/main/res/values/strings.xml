@@ -11,6 +11,7 @@
     <string name="label_go_login">已有账户？去登录</string>
     <string name="label_register_welcome">欢迎您!</string>
     <string name="label_cancellation">注消登录</string>
+    <string name="label_refresh_musics">刷新列表</string>
     <string name="label_exit">退出</string>
     <string name="label_hello">hello,</string>
 
@@ -21,4 +22,12 @@
     <string name="error_password_input">密码不能为空哦</string>
     <string name="register_success">注册成功!</string>
     <string name="login_fail">登录失败！</string>
+    <string name="refresh_success">刷新成功！</string>
+
+
+    <string name="title_assist_permissions">授予权限</string>
+    <string name="label_permission_read">读取文件权限</string>
+    <string name="label_permission_read_desc">用于读取本地的歌曲信息</string>
+    <string name="label_permission_submit">授权</string>
+    <string name="label_permission_ok">授权成功</string>
 </resources>
