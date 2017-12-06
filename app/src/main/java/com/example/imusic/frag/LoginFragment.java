@@ -2,6 +2,7 @@ package com.example.imusic.frag;
 
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -105,8 +106,9 @@ public class LoginFragment extends Fragment {
         if (Account.check(pho, pw)) {
             // 匹配成功，保存登录状态，跳转到MainActivity
             Account.saveIsLogin(true);
-            MainActivity.show(getContext());
             mLoading.stop();
+            getActivity().finish();
+            MainActivity.show(getContext());
         } else {
             ToastUtil.showToast(R.string.login_fail);
             mLoading.stop();
