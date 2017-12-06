@@ -28,7 +28,7 @@
         <TextView
             android:id="@+id/txt_title"
             android:layout_width="match_parent"
-            android:textSize="@dimen/font_28"
+            android:textSize="@dimen/font_20"
             android:layout_height="wrap_content"
             apps:text="不为谁而做的歌"
             android:maxLines="1"
@@ -39,7 +39,7 @@
 
         <TextView
             android:id="@+id/txt_artist"
-            android:textSize="@dimen/font_20"
+            android:textSize="@dimen/font_16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             apps:text="林俊杰"
