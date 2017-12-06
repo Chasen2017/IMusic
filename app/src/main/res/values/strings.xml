@@ -12,7 +12,7 @@
     <string name="label_register_welcome">欢迎您!</string>
     <string name="label_cancellation">注消登录</string>
     <string name="label_exit">退出</string>
-    <string name="label_hello">hello,</string>
+    <string name="label_hello">Hello,</string>
 
     <!--Toast提示-->
     <string name="error_phone_input">电话输入格式错误，要输入11位哦</string>
