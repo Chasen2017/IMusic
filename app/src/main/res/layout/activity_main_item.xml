@@ -31,22 +31,24 @@
         </FrameLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <FrameLayout
-        android:id="@+id/lay_container"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/len_88"
-        apps:layout_behavior="@string/appbar_scrolling_view_behavior" >
+        android:orientation="vertical"
+        apps:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4">
         <ListView
             android:id="@+id/list_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+        </LinearLayout>
 
-        </ListView>
-        </FrameLayout>
-
-    <LinearLayout
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -55,7 +57,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/len_20"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="@dimen/len_2">
 
@@ -81,7 +83,6 @@
                 android:gravity="center"
                 android:textColor="@color/black"
                 tools:text="@string/app_name" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -137,6 +138,6 @@
                 android:layout_weight="1"
                 android:background="@drawable/ic_next" />
         </LinearLayout>
-
+        </LinearLayout>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>
