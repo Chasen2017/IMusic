@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@null"
     tools:context=".activity.MainActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -40,110 +41,114 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="4">
-        <ListView
-            android:id="@+id/list_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-        </LinearLayout>
+            android:layout_weight="4"
+            android:orientation="vertical">
 
-        <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/grey_200"
-        android:orientation="vertical">
+            <ListView
+
+                android:id="@+id/list_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:dividerHeight="1dp"
+                android:divider="@color/black_alpha_32"
+                android:layout_weight="1" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/len_2">
-
-            <TextView
-                android:id="@+id/all_duration"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textColor="@color/black"
-                tools:text="@string/app_name" />
-
-            <SeekBar
-                android:id="@+id/seek_bar"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:progressBackgroundTint="@color/grey_500" />
-
-            <TextView
-                android:id="@+id/now_duration"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textColor="@color/black"
-                tools:text="@string/app_name" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_gravity="bottom"
+            android:background="@color/grey_200"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:padding="@dimen/len_2">
 
                 <TextView
-                    android:id="@+id/tv_nowSong"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/len_36"
-                    android:gravity="start|center_vertical"
-                    android:layout_marginStart="@dimen/len_4"
-                    android:text="@string/app_name"
-                    android:maxLines="1"
+                    android:id="@+id/all_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/font_20" />
+                    tools:text="@string/app_name" />
+
+                <SeekBar
+                    android:id="@+id/seek_bar"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:progressBackgroundTint="@color/grey_500" />
 
                 <TextView
-                    android:id="@+id/tv_nowSinger"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/len_32"
-                    android:gravity="start"
-                    android:layout_marginStart="@dimen/len_4"
-                    android:text="@string/app_name"
+                    android:id="@+id/now_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
                     android:textColor="@color/black"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-                    android:textSize="@dimen/font_16" />
+                    tools:text="@string/app_name" />
             </LinearLayout>
 
-            <!-- 上一首 -->
-            <ImageButton
-                android:id="@+id/ib_before"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/ic_previous" />
+                android:orientation="horizontal">
 
-            <!-- 播放/暂停 -->
-            <ImageButton
-                android:id="@+id/ib_play"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:enabled="true"
-                android:background="@drawable/sel_btn_play_or_pause" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:orientation="vertical">
 
-            <!-- 下一首 -->
-            <ImageButton
-                android:id="@+id/ib_next"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/ic_next" />
-        </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv_nowSong"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/len_36"
+                        android:layout_marginStart="@dimen/len_4"
+                        android:gravity="start|center_vertical"
+                        android:maxLines="1"
+                        android:text="@string/app_name"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/font_20" />
+
+                    <TextView
+                        android:id="@+id/tv_nowSinger"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/len_32"
+                        android:layout_marginStart="@dimen/len_4"
+                        android:gravity="start"
+                        android:text="@string/app_name"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/font_16" />
+                </LinearLayout>
+
+                <!-- 上一首 -->
+                <ImageButton
+                    android:id="@+id/ib_before"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/ic_previous" />
+
+                <!-- 播放/暂停 -->
+                <ImageButton
+                    android:id="@+id/ib_play"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/ic_play" />
+
+                <!-- 下一首 -->
+                <ImageButton
+                    android:id="@+id/ib_next"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/ic_next" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

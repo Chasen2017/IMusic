@@ -47,8 +47,10 @@ public class MusicAdapter extends BaseAdapter {
         return i;
     }
 
+
     @Override
     public View getView(int i, View contentView, ViewGroup viewGroup) {
+        // TODO  这里可以优化，去看一下ViewHolder
         Song song=lSongs.get(i);
         View view = inflater.inflate(R.layout.list_item, null);
         TextView tv_id=view.findViewById(R.id.txt_id);
@@ -58,7 +60,7 @@ public class MusicAdapter extends BaseAdapter {
         tv_id.setText(song.getId()+"");
         tv_song.setText(song.getSongName());
         tv_singer.setText(song.getSinger());
-        //iv_details
+        // TODO iv_details的点击事件，点击之后弹出一个Dialog显示详细的信息
         return view;
     }
 
