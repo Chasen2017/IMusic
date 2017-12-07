@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by ASUS on 2017/12/6.
+ * 查找音乐
  */
 
 public class MusicUtil {
@@ -39,5 +39,18 @@ public class MusicUtil {
             cursor.close();
         }
         return list;
+    }
+
+    //时间转换
+    public static String getTime(int duration) {
+        duration /= 1000;
+        int hour = duration/3600;       //时
+        int minute = (duration-hour*3600)/60;   //分
+        int seconds = duration-hour*3600-minute*60;  //秒
+
+        if(hour > 0) {
+            return String.format("%02d:%02d:%02d", hour, minute, seconds);
+        }
+        return String.format("%02d:%02d", minute, seconds);
     }
 }

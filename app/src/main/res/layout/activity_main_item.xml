@@ -118,20 +118,26 @@
                     android:textSize="@dimen/font_16" />
             </LinearLayout>
 
-
+            <!-- 上一首 -->
             <ImageButton
+                android:id="@+id/before"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/ic_previous" />
 
+            <!-- 播放/暂停 -->
             <ImageButton
+                android:id="@+id/play"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:enabled="true"
                 android:background="@drawable/sel_btn_play_or_pause" />
 
+            <!-- 下一首 -->
             <ImageButton
+                android:id="@+id/next"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
