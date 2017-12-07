@@ -30,10 +30,10 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_weight="18"
                 android:orientation="vertical"
-            android:layout_height="wrap_content"
+                android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/len_4">
 
                 <TextView
@@ -64,7 +64,6 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="@dimen/len_8"
                 android:layout_marginLeft="@dimen/len_8"
-                android:layout_marginRight="@dimen/len_8"
                 android:layout_marginTop="@dimen/len_8"
                 android:layout_weight="1"
                 android:background="@drawable/ic_details"
