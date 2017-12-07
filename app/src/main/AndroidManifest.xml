@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.imusic">
-    <!--读写内存文件的权限-->
+
+    <!--读内存文件的权限-->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:name="com.example.imusic.App"
@@ -26,6 +26,6 @@
             android:theme="@style/AppTheme.TransStatusBar">
 
         </activity>
-        <service android:name=".service.MusicService"></service>
+        <service android:name=".service.MusicService"/>
     </application>
 </manifest>

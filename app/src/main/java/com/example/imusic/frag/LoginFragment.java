@@ -1,10 +1,6 @@
 package com.example.imusic.frag;
 
-
-
-import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
@@ -16,17 +12,14 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.imusic.AccountTrigger;
-import com.example.imusic.App;
+
 import com.example.imusic.R;
-import com.example.imusic.activity.AccountActivity;
 import com.example.imusic.activity.MainActivity;
 import com.example.imusic.presistence.Account;
 import com.example.imusic.util.ToastUtil;
 
-
 import net.qiujuer.genius.ui.widget.Loading;
 
-import java.util.Objects;
 
 import butterknife.BindView;
 
