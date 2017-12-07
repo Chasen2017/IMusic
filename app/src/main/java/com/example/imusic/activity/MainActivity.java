@@ -1,14 +1,16 @@
 package com.example.imusic.activity;
 
+
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
+import android.content.ServiceConnection;
+import android.media.MediaPlayer;
+import android.os.IBinder;
 import android.support.design.widget.NavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import android.widget.SeekBar;
@@ -22,14 +24,18 @@ import com.example.imusic.R;
 import com.example.imusic.adapter.MusicAdapter;
 import com.example.imusic.bean.Song;
 import com.example.imusic.presistence.Account;
+import com.example.imusic.service.MusicService;
 import com.example.imusic.util.MusicUtil;
 import com.example.imusic.util.ToastUtil;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+import static com.example.imusic.util.MusicUtil.getTime;
 
 public class MainActivity extends ActivityCollector {
 
@@ -44,7 +50,7 @@ public class MainActivity extends ActivityCollector {
 
     private MusicAdapter musicAdapter;
 
-    private List<Song> musicList = new ArrayList<Song>();
+    public static List<Song> musicList;
 
     public Song song;
 
@@ -62,6 +68,16 @@ public class MainActivity extends ActivityCollector {
 
     @BindView(R.id.seek_bar)
     SeekBar seekBar;
+
+    @BindView(R.id.play)
+    ImageButton playBtn;
+
+    private MyConn myConn;
+
+    private MusicService.MusicBinder musicBinder;
+
+    int nowMusicIndex;//当前播放的音乐的下标
+
     /**
      * MainActivity的入口方法
      * @param context 从context跳转到MainActivity
@@ -94,19 +110,11 @@ public class MainActivity extends ActivityCollector {
         musicList = MusicUtil.getMusicData(this);
         musicAdapter = new MusicAdapter(this, musicList);
         musicListView.setAdapter(musicAdapter);
-    }
 
-    //时间转换
-    private String getTime(int duration) {
-        duration /= 1000;
-        int hour = duration/3600;       //时
-        int minute = (duration-hour*3600)/60;   //分
-        int seconds = duration-hour*3600-minute*60;  //秒
+        myConn=new MyConn();
+        bind();
+        nowMusicIndex=0;
 
-        if(hour > 0) {
-            return String.format("%02d:%02d:%02d", hour, minute, seconds);
-        }
-        return String.format("%02d:%02d", minute, seconds);
     }
 
     private void initWidget() {
@@ -138,6 +146,8 @@ public class MainActivity extends ActivityCollector {
                 ActivityCollector.finishAll();
             }
         });
+
+
     }
 
     @Override
@@ -146,15 +156,59 @@ public class MainActivity extends ActivityCollector {
         ActivityCollector.removeActivity(this);
     }
 
-    //上一首
+    public void bind(){
+        Intent intent=new Intent(this, MusicService.class);
+        bindService(intent,myConn,BIND_AUTO_CREATE);
+    }
+
+    @OnClick(R.id.play)
+    void playOnClicked() {
+        song = musicList.get(nowMusicIndex);//当前播放的音乐
+        musicBinder.callPlay(song.getPath());
+    }
+
+    @OnClick(R.id.before)
     public void before(View view) {
+        musicBinder.callStop();
+        nowMusicIndex--;
+        if(nowMusicIndex<0){
+            nowMusicIndex=musicList.size()-1;
+        }
+        song = musicList.get(nowMusicIndex);//当前播放的音乐
+        musicBinder.callPlay(song.getPath());
     }
 
-    //播放/暂停
-    public void star(View view) {
-    }
-
-    //下一首
+    @OnClick(R.id.next)
     public void next(View view) {
+        musicBinder.callStop();
+        nowMusicIndex++;
+        if(nowMusicIndex>=musicList.size()){
+            nowMusicIndex=0;
+        }
+        song = musicList.get(nowMusicIndex);//当前播放的音乐
+        musicBinder.callPlay(song.getPath());
     }
+
+    private class MyConn implements ServiceConnection {
+
+        /**
+         * 服务被绑定时候调用的方法
+         * @param componentName
+         * @param iBinder
+         */
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            musicBinder= (MusicService.MusicBinder) iBinder;
+        }
+
+        /**
+         * 当服务失去绑定时调用的方法，当服务异常终止的时候。
+         * @param componentName
+         */
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+    }
+
 }

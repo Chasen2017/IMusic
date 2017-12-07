@@ -14,7 +14,7 @@ import com.example.imusic.bean.Song;
 import java.util.List;
 
 /**
- * Created by ASUS on 2017/12/6.
+ * 音乐ListView适配器
  *
  */
 
