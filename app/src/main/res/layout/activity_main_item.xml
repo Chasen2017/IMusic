@@ -68,7 +68,7 @@
                 android:padding="@dimen/len_2">
 
                 <TextView
-                    android:id="@+id/all_duration"
+                    android:id="@+id/now_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -83,7 +83,7 @@
                     android:progressBackgroundTint="@color/grey_500" />
 
                 <TextView
-                    android:id="@+id/now_duration"
+                    android:id="@+id/all_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"

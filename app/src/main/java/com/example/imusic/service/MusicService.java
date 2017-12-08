@@ -18,48 +18,80 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
 
     public static MediaPlayer mediaPlayer;
 
-    public class MusicBinder extends Binder{
+    public class MusicBinder extends Binder {
 
-        /**
-         * 内部人员帮助我们调用服务内的方法
-         */
-        public void callPlay(String path){
+        //呼叫播放/暂停方法
+        public void callPlay(String path) {
             playMusic(path);
         }
-        // 暂停更合适
-        public void callPause(){
-            pauseMusic();
+
+        //呼叫停止方法
+        public void callStop() {
+            stopMusic();
         }
 
+        //呼叫播放到指定进度方法
+        public void callSeekTo(int mesc) {
+            seekToMusic(mesc);
+        }
+
+        /**
+         * 获取正在播放的歌曲进度
+         */
+        public int callGetCurrentPositon() {
+            return getCurrentPosition();
+        }
     }
 
-    private void playMusic(String path){
+    //播放/暂停音乐
+    private void playMusic(String path) {
+        //打开软件播放第一首歌/换歌时mediaPlayer才是空，不空就是暂停/播放
+        if (mediaPlayer == null) {
+            mediaPlayer = new MediaPlayer();
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            try {
+                mediaPlayer.setDataSource(path);
+                mediaPlayer.prepare();
+                mediaPlayer.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+        //media不为空，就是要暂停/继续
         if (mediaPlayer.isPlaying()) {
-            mediaPlayer.stop();
-        }
-        mediaPlayer.reset();
-        mediaPlayer.release();
-        mediaPlayer = new MediaPlayer();
-        try {
-            mediaPlayer.setDataSource(path);
-            mediaPlayer.prepare();
+            mediaPlayer.pause();
+        } else {
             mediaPlayer.start();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
-    private void pauseMusic(){
-        if(mediaPlayer!=null&&mediaPlayer.isPlaying()){
-            mediaPlayer.pause();
-//            mediaPlayer.release();
+    //停止音乐，换歌时（上/下一首）才需要调用
+    private void stopMusic() {
+        if (mediaPlayer != null) {//只要是不为空，当前音乐不管播不播放都该释放掉
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
         }
+    }
+
+    //播放到指定进度
+    private void seekToMusic(int mesc){
+        if (mediaPlayer != null)
+            mediaPlayer.seekTo(mesc);
+    }
+
+    //返回当前播放音乐的进度
+    private int getCurrentPosition(){
+        int t = 0;
+        if (mediaPlayer != null) {
+            t = mediaPlayer.getCurrentPosition();
+        }
+        return t;
     }
 
     @Override
     public void onCreate() {
-        mediaPlayer=new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         super.onCreate();
     }
 
@@ -76,7 +108,7 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
 
     @Override
     public void onDestroy() {
-        mediaPlayer=null;
+        stopMusic();
         super.onDestroy();
     }
 }
