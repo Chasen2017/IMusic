@@ -34,6 +34,10 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
     }
 
     private void playMusic(String path){
+        if(mediaPlayer==null){
+            mediaPlayer=new MediaPlayer();
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        }
         try {
             mediaPlayer.setDataSource(path);
             mediaPlayer.prepare();
@@ -46,14 +50,13 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
     private void stopMusic(){
         if(mediaPlayer!=null&&mediaPlayer.isPlaying()){
             mediaPlayer.stop();
-//            mediaPlayer.release();
+            mediaPlayer.release();
+            mediaPlayer=null;
         }
     }
 
     @Override
     public void onCreate() {
-        mediaPlayer=new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         super.onCreate();
     }
 

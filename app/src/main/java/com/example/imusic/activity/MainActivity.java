@@ -69,9 +69,6 @@ public class MainActivity extends ActivityCollector {
     @BindView(R.id.seek_bar)
     SeekBar seekBar;
 
-    @BindView(R.id.play)
-    ImageButton playBtn;
-
     private MyConn myConn;
 
     private MusicService.MusicBinder musicBinder;
@@ -161,13 +158,13 @@ public class MainActivity extends ActivityCollector {
         bindService(intent,myConn,BIND_AUTO_CREATE);
     }
 
-    @OnClick(R.id.play)
+    @OnClick(R.id.ib_play)
     void playOnClicked() {
         song = musicList.get(nowMusicIndex);//当前播放的音乐
         musicBinder.callPlay(song.getPath());
     }
 
-    @OnClick(R.id.before)
+    @OnClick(R.id.ib_before)
     public void before(View view) {
         musicBinder.callStop();
         nowMusicIndex--;
@@ -178,7 +175,7 @@ public class MainActivity extends ActivityCollector {
         musicBinder.callPlay(song.getPath());
     }
 
-    @OnClick(R.id.next)
+    @OnClick(R.id.ib_next)
     public void next(View view) {
         musicBinder.callStop();
         nowMusicIndex++;
