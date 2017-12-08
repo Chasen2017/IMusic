@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public class MusicService extends Service implements MediaPlayer.OnCompletionListener {
 
-    private MediaPlayer mediaPlayer;
+    public static MediaPlayer mediaPlayer;
 
     public class MusicBinder extends Binder{
 
@@ -26,18 +26,20 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         public void callPlay(String path){
             playMusic(path);
         }
-
-        public void callStop(){
-            stopMusic();
+        // 暂停更合适
+        public void callPause(){
+            pauseMusic();
         }
 
     }
 
     private void playMusic(String path){
-        if(mediaPlayer==null){
-            mediaPlayer=new MediaPlayer();
-            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.stop();
         }
+        mediaPlayer.reset();
+        mediaPlayer.release();
+        mediaPlayer = new MediaPlayer();
         try {
             mediaPlayer.setDataSource(path);
             mediaPlayer.prepare();
@@ -47,16 +49,17 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         }
     }
 
-    private void stopMusic(){
+    private void pauseMusic(){
         if(mediaPlayer!=null&&mediaPlayer.isPlaying()){
-            mediaPlayer.stop();
-            mediaPlayer.release();
-            mediaPlayer=null;
+            mediaPlayer.pause();
+//            mediaPlayer.release();
         }
     }
 
     @Override
     public void onCreate() {
+        mediaPlayer=new MediaPlayer();
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         super.onCreate();
     }
 
