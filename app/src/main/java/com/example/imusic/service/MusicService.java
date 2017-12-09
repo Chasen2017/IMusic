@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -14,11 +15,16 @@ import java.io.IOException;
  * 音乐播放服务
  */
 
-public class MusicService extends Service implements MediaPlayer.OnCompletionListener {
+public class MusicService extends Service {
 
-    public static MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer;
 
     public class MusicBinder extends Binder {
+
+        //得到MediaPlayer状态的方法，仅不空且播放才是true
+        public boolean callGetMPStatus(){
+            return getMPStatus();
+        }
 
         //呼叫播放/暂停方法
         public void callPlay(String path) {
@@ -40,6 +46,15 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
          */
         public int callGetCurrentPositon() {
             return getCurrentPosition();
+        }
+    }
+
+    //得到MediaPlayer的状态：是否播放（空也是不播放）
+    private boolean getMPStatus(){
+        if(mediaPlayer!=null&&mediaPlayer.isPlaying()){//播放
+            return true;
+        }else {
+            return false;
         }
     }
 
@@ -99,11 +114,6 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
     @Override
     public IBinder onBind(Intent intent) {
         return new MusicBinder();
-    }
-
-    @Override
-    public void onCompletion(MediaPlayer mediaPlayer) {
-
     }
 
     @Override
