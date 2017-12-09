@@ -56,12 +56,7 @@ public class AccountActivity extends ActivityCollector implements AccountTrigger
         ActivityCollector.addActivity(this);
         Account.load(); //确保数据先初始化
         // 检查权限
-        if (PermissionsFragment.haveAll(this, getSupportFragmentManager())) {
-            if (Account.isLogin) {
-                MainActivity.show(this);
-                finish();
-            }
-        }
+        PermissionsFragment.haveAll(this, getSupportFragmentManager());
         initWidget();
     }
 

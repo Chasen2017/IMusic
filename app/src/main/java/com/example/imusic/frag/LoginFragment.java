@@ -96,6 +96,7 @@ public class LoginFragment extends Fragment {
             mLoading.stop();
             return;
         }
+
         if (Account.check(pho, pw)) {
             // 匹配成功，保存登录状态，跳转到MainActivity
             Account.saveIsLogin(true);
