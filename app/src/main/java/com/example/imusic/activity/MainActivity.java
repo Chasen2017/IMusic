@@ -2,15 +2,18 @@ package com.example.imusic.activity;
 
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.support.design.widget.NavigationView;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
@@ -74,13 +77,13 @@ public class MainActivity extends ActivityCollector {
     @BindView(R.id.ib_play)
     ImageButton playBtn;
 
-    private MyConn myConn;
-
     private MusicService.MusicBinder musicBinder;
 
     int nowMusicIndex;//当前播放的音乐的下标
 
     public static final int UPDATE = 1;
+
+    MusicReceiver musicReceiver;
 
     //处理seekBar进度条的显示
     @SuppressLint("HandlerLeak")
@@ -90,10 +93,12 @@ public class MainActivity extends ActivityCollector {
             switch (message.what) {
                 case UPDATE:
                     //应该先判这首歌完没完，再去更新seekBar
-                    //当前歌曲已经播放完成，自动下一首
-                    if(musicBinder.callGetCurrentPositon()==song.getDuration()){
-                        next();
-                    }
+
+                    //当前歌曲已经播放完成，自动下一首（没效果，应该是别的办法才对）
+                    //第三，下面改了，这里这样子还是musicBinder为null，说明musicBinder不是在bind()后立刻被绑定的
+//                    if(musicBinder.callGetCurrentPositon()==song.getDuration()){
+//                        next();
+//                    }
                     //若只考虑有歌情况，这个判断就没什么用了
                     if (musicBinder != null && song.getDuration() != 0) {
                         nowDuration.setText(getTime(musicBinder.callGetCurrentPositon()));
@@ -106,13 +111,14 @@ public class MainActivity extends ActivityCollector {
         }
     };
 
-    private class MyConn implements ServiceConnection {
+    private ServiceConnection myConn =new ServiceConnection(){
 
         /**
          * 服务被绑定时候调用的方法
          */
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            Log.i("TAG", "得到中间人 ");
             musicBinder = (MusicService.MusicBinder) iBinder;
         }
 
@@ -120,7 +126,7 @@ public class MainActivity extends ActivityCollector {
         public void onServiceDisconnected(ComponentName componentName) {
 
         }
-    }
+    };
 
     /**
      * MainActivity的入口方法
@@ -150,6 +156,7 @@ public class MainActivity extends ActivityCollector {
                         this.view.setBackground(resource.getCurrent());
                     }
                 });
+        registerReceiver(new MusicReceiver(),new IntentFilter("com.example.imusic.ThisSongEnd"));
     }
 
     /**
@@ -175,7 +182,7 @@ public class MainActivity extends ActivityCollector {
                     ToastUtil.showToast(R.string.refresh_success);
                 }else {
                     //没歌就结束退出啦
-                    //扫描导致了没哥，服务已经被创建绑定了，要解绑
+                    //扫描导致了没歌，服务已经被创建绑定了，要解绑
                     ToastUtil.showToast(R.string.none_Song);
                     removeService();
                     ActivityCollector.finishAll();
@@ -220,7 +227,6 @@ public class MainActivity extends ActivityCollector {
      * 初始化数据
      */
     private void initData() {
-        myConn = new MyConn();
         if(musicList.size()>0){//有歌初始化
             nowMusicIndex = 0;
             song = musicList.get(nowMusicIndex);//当前播放的音乐，初始化是第一首歌
@@ -274,10 +280,32 @@ public class MainActivity extends ActivityCollector {
         }).start();
     }
 
+    //混合开启服务，先开启，后绑定，拿到中间人即可解绑,退出前停止服务
+    public void bind() {
+        Intent intent = new Intent(this, MusicService.class);
+        startService(intent);
+        //TODO 第一，拿不到musicBinder，另外的程序同样的写法可以拿到(不知道是不是跟那个小bug有关)
+        bindService(intent, myConn, Context.BIND_AUTO_CREATE);
+//        unbindService(myConn);
+    }
+
+    //停止服务前解绑会好一点吧……
+    public void removeService(){
+        unbindService(myConn);
+        Intent intent = new Intent(this, MusicService.class);
+        stopService(intent);
+    }
+
     //更新各部件信息
     public void updateView() {
         // 切换播放按钮样式
-        if (musicBinder.callGetMPStatus()) {
+
+        //跟在第一后，为什么这样子musicBinder是空？？？？？
+//        if(musicBinder.callGetMPStatus){
+        //TODO 不知道什么道理
+        //第二，改成这样子，log正常打印，说明服务创建后被正常绑定（不能确定绑定的时机，真机debug总显示waitingXXXXX……）
+        //第四，在初始化调用本方法前，服务未被绑定，log打印成功说明是在之后，到底什么时候？
+        if (MusicService.mediaPlayer!=null&&MusicService.mediaPlayer.isPlaying()) {
             playBtn.setBackgroundResource(R.drawable.ic_pause);//音乐在播放，按钮显示暂停
         } else {
             playBtn.setBackgroundResource(R.drawable.ic_play);//音乐没在播放，按钮显示播放
@@ -291,22 +319,6 @@ public class MainActivity extends ActivityCollector {
     protected void onDestroy() {
         super.onDestroy();
         ActivityCollector.removeActivity(this);
-    }
-
-    //混合开启服务，先开启，后绑定，拿到中间人即可解绑,退出前停止服务
-    public void bind() {
-        Intent intent = new Intent(this, MusicService.class);
-        startService(intent);
-        //TODO 拿不到musicBinder，另外的程序同样的写法可以拿到(不知道是不是跟那个小bug有关)
-        bindService(intent, myConn, BIND_AUTO_CREATE);
-//        unbindService(myConn);
-    }
-
-    //停止服务前解绑会好一点吧……
-    public void removeService(){
-        unbindService(myConn);
-        Intent intent = new Intent(this, MusicService.class);
-        stopService(intent);
     }
 
     //播放/暂停按钮的点击事件
@@ -346,6 +358,15 @@ public class MainActivity extends ActivityCollector {
         musicBinder.callPlay(song.getPath());
         //更新显示信息
         updateView();
+    }
+
+    public class MusicReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.i("TAG", "接收到一首歌曲播放完成的消息，自动播放下一首");
+            next();
+        }
     }
 
 }
