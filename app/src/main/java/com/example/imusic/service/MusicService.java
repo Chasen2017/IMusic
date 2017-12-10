@@ -17,11 +17,10 @@ import java.io.IOException;
 
 public class MusicService extends Service {
 
-    public static MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer;
 
     public class MusicBinder extends Binder {
 
-        //为什么MediaPlayer设成private，通过这个方法来获取状态，初始化那里就会错呢？
         //得到MediaPlayer状态的方法，仅不空且播放才是true
         public boolean callGetMPStatus(){
             return getMPStatus();
@@ -45,7 +44,7 @@ public class MusicService extends Service {
         /**
          * 获取正在播放的歌曲进度
          */
-        public int callGetCurrentPositon() {
+        public int callGetCurrentPosition() {
             return getCurrentPosition();
         }
     }

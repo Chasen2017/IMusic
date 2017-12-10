@@ -25,6 +25,8 @@ import net.qiujuer.genius.ui.compat.UiCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.imusic.App.getContext;
+
 /**
  * 用户登录注册的Activity
  */
@@ -56,7 +58,13 @@ public class AccountActivity extends ActivityCollector implements AccountTrigger
         ActivityCollector.addActivity(this);
         Account.load(); //确保数据先初始化
         // 检查权限
-        PermissionsFragment.haveAll(this, getSupportFragmentManager());
+        if(PermissionsFragment.haveAll(this, getSupportFragmentManager())) {
+            // 判断是否登录过了，如果登录过了，则直接跳转到MainActivity
+            if (Account.isLogin) {
+                MainActivity.show(AccountActivity.this);
+                finish();
+            }
+        }
         initWidget();
     }
 

@@ -3,7 +3,7 @@
     package="com.example.imusic">
 
     <!--读内存文件的权限-->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name="com.example.imusic.App"
@@ -23,14 +23,9 @@
         </activity>
         <activity
             android:name=".activity.MainActivity"
-            android:theme="@style/AppTheme.TransStatusBar">
+            android:theme="@style/AppTheme.TransStatusBar"/>
 
-        </activity>
-        <service android:name=".service.MusicService"/>
-        <!--<receiver android:name=".activity.MainActivity$MusicReceiver">
-            <intent-filter>
-                <action android:name="com.example.imusic.ThisSongEnd"/>
-            </intent-filter>
-        </receiver>-->
+
+        <service android:name=".service.MusicService" />
     </application>
 </manifest>
