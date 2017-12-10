@@ -27,5 +27,10 @@
 
         </activity>
         <service android:name=".service.MusicService"/>
+        <!--<receiver android:name=".activity.MainActivity$MusicReceiver">
+            <intent-filter>
+                <action android:name="com.example.imusic.ThisSongEnd"/>
+            </intent-filter>
+        </receiver>-->
     </application>
 </manifest>

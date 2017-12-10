@@ -17,10 +17,11 @@ import java.io.IOException;
 
 public class MusicService extends Service {
 
-    private MediaPlayer mediaPlayer;
+    public static MediaPlayer mediaPlayer;
 
     public class MusicBinder extends Binder {
 
+        //为什么MediaPlayer设成private，通过这个方法来获取状态，初始化那里就会错呢？
         //得到MediaPlayer状态的方法，仅不空且播放才是true
         public boolean callGetMPStatus(){
             return getMPStatus();
@@ -71,6 +72,16 @@ public class MusicService extends Service {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            //MediaPlayer播放完一首歌的广播事件
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener(){
+
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+                    Intent intent=new Intent();
+                    intent.setAction("com.example.imusic.ThisSongEnd");
+                    sendBroadcast(intent);
+                }
+            });
             return;
         }
         //media不为空，就是要暂停/继续
@@ -107,12 +118,14 @@ public class MusicService extends Service {
 
     @Override
     public void onCreate() {
+        Log.i("TAG", "服务创建了 ");
         super.onCreate();
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
+        Log.i("TAG", "服务被绑定了 ");
         return new MusicBinder();
     }
 
