@@ -92,17 +92,10 @@ public class MainActivity extends ActivityCollector {
         public void handleMessage(Message message) {
             switch (message.what) {
                 case UPDATE:
-                    //应该先判这首歌完没完，再去更新seekBar
-
-                    //当前歌曲已经播放完成，自动下一首（没效果，应该是别的办法才对）
-                    //第三，下面改了，这里这样子还是musicBinder为null，说明musicBinder不是在bind()后立刻被绑定的
-//                    if(musicBinder.callGetCurrentPositon()==song.getDuration()){
-//                        next();
-//                    }
                     //若只考虑有歌情况，这个判断就没什么用了
                     if (musicBinder != null && song.getDuration() != 0) {
-                        nowDuration.setText(getTime(musicBinder.callGetCurrentPositon()));
-                        seekBar.setProgress(100*musicBinder.callGetCurrentPositon()/song.getDuration());
+                        nowDuration.setText(getTime(musicBinder.callGetCurrentPosition()));
+                        seekBar.setProgress(100*musicBinder.callGetCurrentPosition()/song.getDuration());
                     }
                     break;
                 default:
@@ -156,7 +149,8 @@ public class MainActivity extends ActivityCollector {
                         this.view.setBackground(resource.getCurrent());
                     }
                 });
-        registerReceiver(new MusicReceiver(),new IntentFilter("com.example.imusic.ThisSongEnd"));
+        musicReceiver = new MusicReceiver();
+        registerReceiver(musicReceiver,new IntentFilter("com.example.imusic.ThisSongEnd"));
     }
 
     /**
@@ -195,6 +189,7 @@ public class MainActivity extends ActivityCollector {
             public void onClick(View v) {
                 // 注销登录，跳转到登录页面
                 Account.saveIsLogin(false);
+                musicBinder.callStop();
                 AccountActivity.show(MainActivity.this);
             }
         });
@@ -230,6 +225,9 @@ public class MainActivity extends ActivityCollector {
         if(musicList.size()>0){//有歌初始化
             nowMusicIndex = 0;
             song = musicList.get(nowMusicIndex);//当前播放的音乐，初始化是第一首歌
+            titleTV.setText(song.getSongName());
+            artistTV.setText(song.getSinger());
+            allDuration.setText(MusicUtil.getTime(song.getDuration()));
         }else {
             //没歌就结束退出啦
             //还没创建绑定服务呢，所以不用解绑
@@ -260,8 +258,6 @@ public class MainActivity extends ActivityCollector {
 
             }
         });
-        //需要绑定服务后才有中间人，才能拿到音乐状态
-        updateView();//初始化后各信息均有改变
         //监听播放进度
         new Thread(new Runnable() {
             @Override
@@ -284,28 +280,21 @@ public class MainActivity extends ActivityCollector {
     public void bind() {
         Intent intent = new Intent(this, MusicService.class);
         startService(intent);
-        //TODO 第一，拿不到musicBinder，另外的程序同样的写法可以拿到(不知道是不是跟那个小bug有关)
         bindService(intent, myConn, Context.BIND_AUTO_CREATE);
-//        unbindService(myConn);
     }
 
-    //停止服务前解绑会好一点吧……
+    // 先解绑，后停止服务
     public void removeService(){
         unbindService(myConn);
         Intent intent = new Intent(this, MusicService.class);
         stopService(intent);
+        unregisterReceiver(musicReceiver);
     }
 
     //更新各部件信息
     public void updateView() {
         // 切换播放按钮样式
-
-        //跟在第一后，为什么这样子musicBinder是空？？？？？
-//        if(musicBinder.callGetMPStatus){
-        //TODO 不知道什么道理
-        //第二，改成这样子，log正常打印，说明服务创建后被正常绑定（不能确定绑定的时机，真机debug总显示waitingXXXXX……）
-        //第四，在初始化调用本方法前，服务未被绑定，log打印成功说明是在之后，到底什么时候？
-        if (MusicService.mediaPlayer!=null&&MusicService.mediaPlayer.isPlaying()) {
+        if (musicBinder.callGetMPStatus()) {
             playBtn.setBackgroundResource(R.drawable.ic_pause);//音乐在播放，按钮显示暂停
         } else {
             playBtn.setBackgroundResource(R.drawable.ic_play);//音乐没在播放，按钮显示播放
@@ -318,6 +307,7 @@ public class MainActivity extends ActivityCollector {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unbindService(myConn);
         ActivityCollector.removeActivity(this);
     }
 

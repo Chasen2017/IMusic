@@ -70,10 +70,6 @@ public class LoginFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        // 判断是否登录过了，如果登录过了，则直接跳转到MainActivity
-        if (Account.isLogin) {
-            MainActivity.show(getContext());
-        }
         // 拿到Activity的引用
         mTrigger = (AccountTrigger) context;
     }
