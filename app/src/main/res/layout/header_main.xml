@@ -67,7 +67,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic__cancellation"
+        android:background="@drawable/ic_cancellation"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginLeft="28dp"
         android:id="@+id/im_cancellation"

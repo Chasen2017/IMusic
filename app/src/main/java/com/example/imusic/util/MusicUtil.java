@@ -3,6 +3,7 @@ package com.example.imusic.util;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 
 import com.example.imusic.bean.Song;
 
@@ -31,7 +32,9 @@ public class MusicUtil {
                 song.setId(id);
                 String name=cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME));
                 String singer = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));
-                name = name.replace(singer, "").replace("-", "").trim();
+                if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(singer)) {
+                    name = name.replace(singer, "").replace("-", "").trim();
+                }
                 song.setSongName(name);
                 song.setSinger(singer);
                 song.setPath(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));

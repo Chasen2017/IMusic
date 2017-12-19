@@ -59,6 +59,7 @@ public class Account {
      * @return 是否匹配，是返回True
      */
     public static boolean check(String phone, String password) {
+        load();
         if (phone.equals(Account.phone) && password.equals(Account.password)) {
             return true;
         }

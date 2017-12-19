@@ -25,7 +25,6 @@
             android:name=".activity.MainActivity"
             android:theme="@style/AppTheme.TransStatusBar"/>
 
-
         <service android:name=".service.MusicService" />
     </application>
 </manifest>

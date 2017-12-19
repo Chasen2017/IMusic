@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@null"
+    android:orientation="vertical"
     tools:context=".activity.MainActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -26,7 +26,7 @@
                 android:layout_gravity="center|bottom"
                 android:layout_marginBottom="@dimen/len_8"
                 android:gravity="center"
-                android:text="@string/app_name"
+                tools:text="@string/app_name"
                 android:textAppearance="@style/TextAppearance.Title"
                 android:textSize="@dimen/font_32" />
         </FrameLayout>
@@ -49,9 +49,9 @@
                 android:id="@+id/list_view"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:dividerHeight="1dp"
+                android:layout_weight="1"
                 android:divider="@color/black_alpha_32"
-                android:layout_weight="1" />
+                android:dividerHeight="1dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -107,9 +107,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/len_36"
                         android:layout_marginStart="@dimen/len_4"
+                        android:ellipsize="middle"
                         android:gravity="start|center_vertical"
+                        android:focusable="true"
                         android:maxLines="1"
-                        android:text="@string/app_name"
                         android:textColor="@color/black"
                         android:textSize="@dimen/font_20" />
 
@@ -118,8 +119,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/len_32"
                         android:layout_marginStart="@dimen/len_4"
-                        android:gravity="start"
-                        android:text="@string/app_name"
+                        android:ellipsize="middle"
+                        android:gravity="start|center_vertical"
+                        android:maxLines="1"
+                        android:focusable="true"
                         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
                         android:textColor="@color/black"
                         android:textSize="@dimen/font_16" />
