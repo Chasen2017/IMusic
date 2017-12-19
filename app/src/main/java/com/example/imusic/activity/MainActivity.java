@@ -85,6 +85,8 @@ public class MainActivity extends ActivityCollector {
 
     MusicReceiver musicReceiver;
 
+    Intent intent;
+
     //处理seekBar进度条的显示
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
@@ -167,9 +169,11 @@ public class MainActivity extends ActivityCollector {
             @Override
             public void onClick(View v) {
                 musicBinder.callStop();//先停掉音乐
-                musicList = MusicUtil.getMusicData(MainActivity.this);
                 //跟初始化的逻辑一样
                 if(musicList.size()>0){
+                    musicList = MusicUtil.getMusicData(MainActivity.this);
+                    musicAdapter = new MusicAdapter(MainActivity.this, musicList);
+                    musicListView.setAdapter(musicAdapter);
                     nowMusicIndex=0;
                     song = musicList.get(nowMusicIndex);//当前播放的音乐，刷新列表后初始化是第一首歌
                     updateView();//要判mediaplayer空了……
@@ -278,7 +282,7 @@ public class MainActivity extends ActivityCollector {
 
     //混合开启服务，先开启，后绑定，拿到中间人即可解绑,退出前停止服务
     public void bind() {
-        Intent intent = new Intent(this, MusicService.class);
+        intent = new Intent(this, MusicService.class);
         startService(intent);
         bindService(intent, myConn, Context.BIND_AUTO_CREATE);
     }
@@ -307,7 +311,6 @@ public class MainActivity extends ActivityCollector {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbindService(myConn);
         ActivityCollector.removeActivity(this);
     }
 

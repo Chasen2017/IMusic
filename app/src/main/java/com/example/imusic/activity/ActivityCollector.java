@@ -16,7 +16,9 @@ public class ActivityCollector extends AppCompatActivity {
 
     // 添加activity
     public static void addActivity(Activity activity) {
-        activities.add(activity);
+        if (!activities.contains(activity)) {
+            activities.add(activity);
+        }
     }
 
     // 移除activity
